@@ -1,3 +1,4 @@
+import 'dotenv/config';
 import { connect } from 'mongoose';
 import logger from './logger.js';
 
@@ -12,6 +13,7 @@ const MONGO_URL = MONGO_URI.replace('<db_username>', MONGO_USERNAME).replace(
 
 const connectToMongoDB = async () => {
   try {
+    logger.info('Connecting to MongoDB...');
     await connect(MONGO_URL);
     logger.info('Connected to MongoDB');
   } catch (error) {

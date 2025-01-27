@@ -1,7 +1,11 @@
 import bcrypt from 'bcrypt';
 import 'dotenv/config';
 import { Response } from 'express';
-import jwt from 'jsonwebtoken';
+import jwt, { JwtPayload } from 'jsonwebtoken';
+
+interface CustomJwtPayload extends JwtPayload {
+  userId: string;
+}
 
 const hashPassword = async (password: string) => {
   const salt = await bcrypt.genSalt(10);
@@ -31,4 +35,21 @@ const generateJWTToken = async (userId: string, res: Response) => {
   return token;
 };
 
-export { comparePassword, generateJWTToken, hashPassword };
+const verifyJWTToken = async (
+  token: string,
+): Promise<CustomJwtPayload | null> => {
+  const secretKey = process.env.JWT_SECRET ?? 'your_secret_key';
+  try {
+    const decoded: CustomJwtPayload = jwt.verify(
+      token,
+      secretKey,
+    ) as CustomJwtPayload;
+
+    return decoded;
+  } catch (error) {
+    console.error('Error verifying JWT token:', error);
+    return null;
+  }
+};
+
+export { comparePassword, generateJWTToken, hashPassword, verifyJWTToken };

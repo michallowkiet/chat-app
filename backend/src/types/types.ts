@@ -1,3 +1,5 @@
+import { Request } from 'express';
+
 export interface IUser {
   _id?: string;
   fullName: string;
@@ -16,6 +18,10 @@ export interface IMessage {
   imageUrl?: string;
   createdAt?: string;
   updatedAt?: string;
+}
+
+export interface ChatAppRequest extends Request {
+  user?: IUser | null;
 }
 
 export type MessageList = IMessage[];

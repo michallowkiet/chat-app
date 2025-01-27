@@ -1,10 +1,13 @@
 import logger from '@/lib/logger.js';
+import { connectToMongoDB } from '@/lib/mongoDB.js';
+import profileRoutes from '@/routes/profile.route.js';
 import authRoutes from '@routes/auth.route.js';
+import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import 'dotenv/config';
 import express, { Application } from 'express';
 import morgan from 'morgan';
-import { connectToMongoDB } from './lib/mongoDB.js';
+import { connectToCloudinary } from './lib/cloudinary.js';
 
 const PORT = process.env.PORT ?? 3000;
 
@@ -14,12 +17,15 @@ const app: Application = express();
 app.use(morgan('common'));
 app.use(cors({ origin: '*' }));
 app.use(express.json());
+app.use(cookieParser());
 
 // Define your routes here
 app.use('/api/auth', authRoutes);
+app.use('/api/profile', profileRoutes, profileRoutes);
 
 // Start the server
 app.listen(PORT, async () => {
   await connectToMongoDB();
+  await connectToCloudinary();
   logger.info(`Server is running on port ${PORT}`);
 });
