@@ -8,4 +8,24 @@ The backend handles routing, authentication, and data storage using Express.js. 
 
 For deployment, the application can be hosted on various platforms such as AWS, Heroku, or Google Cloud Platform. The backend runs on Node.js, leveraging the strength of Express.js for handling HTTP requests and WebSocket connections.
 
-This setup ensures that the application is scalable, maintainable, and ready to handle large numbers of users and messages.
+## Default Configuration
+
+- **Backend Port:** 3000
+- **Frontend Port:** 5173
+- **All environments:** .env.dist
+
+## Getting Started
+
+1. **Clone the repository:**
+   - `git clone https://github.com/michallowkiet/chat-app.git`
+2. **Setup environment variables:**
+   - Copy `.env.dist` to `.env` and fill in the necessary environment variables.
+3. **Install backend dependencies and start the server:**
+   - `cd chat-app/backend`
+   - `npm install && npm run dev`
+4. **Install frontend dependencies and start the server:**
+   - `cd chat-app/frontend`
+   - `npm install && npm run dev`
+5. **Access the application in your browser:**
+   - Open a web browser and navigate to `http://localhost:5173`
+6. **Start using the chat application!**
