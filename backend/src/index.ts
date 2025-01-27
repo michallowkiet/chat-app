@@ -2,13 +2,13 @@ import logger from '@/lib/logger.js';
 import authRoutes from '@routes/auth.route.js';
 import cors from 'cors';
 import 'dotenv/config';
-import express, { Express } from 'express';
+import express, { Application } from 'express';
 import morgan from 'morgan';
 import { connectToMongoDB } from './lib/mongoDB.js';
 
 const PORT = process.env.PORT ?? 3000;
 
-const app: Express = express();
+const app: Application = express();
 
 // Middleware to enable CORS and parse JSON bodies
 app.use(morgan('common'));
