@@ -1,41 +1,12 @@
+import logger from '@/lib/logger.js';
+import authRoutes from '@routes/auth.route.js';
 import cors from 'cors';
 import 'dotenv/config';
-import express, { Express, Request, Response } from 'express';
+import express, { Express } from 'express';
 import morgan from 'morgan';
-import { createLogger, format, transports } from 'winston';
+import { connectToMongoDB } from './lib/mongoDB.js';
 
 const PORT = process.env.PORT ?? 3000;
-
-// Create a logger instance
-const logger = createLogger({
-  level: process.env.LOG_LEVEL ?? 'info',
-  format: format.combine(
-    format.colorize(),
-    format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }),
-    format.json(),
-  ),
-  transports: [
-    new transports.Console({
-      format: format.combine(
-        format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }),
-        format.printf(
-          ({ level, message, timestamp }) =>
-            `${timestamp} - ${level}: ${message}`,
-        ),
-      ),
-    }),
-    new transports.File({ filename: 'app.log' }),
-  ],
-  defaultMeta: { service: 'express' },
-  exceptionHandlers: [
-    new transports.Console(),
-    new transports.File({ filename: 'exceptions.log' }),
-  ],
-  rejectionHandlers: [
-    new transports.Console(),
-    new transports.File({ filename: 'rejections.log' }),
-  ],
-});
 
 const app: Express = express();
 
@@ -45,11 +16,10 @@ app.use(cors({ origin: '*' }));
 app.use(express.json());
 
 // Define your routes here
-app.get('/', (req: Request, res: Response) => {
-  res.send('Hello from Express!');
-});
+app.use('/api/auth', authRoutes);
 
 // Start the server
-app.listen(PORT, () => {
+app.listen(PORT, async () => {
+  await connectToMongoDB();
   logger.info(`Server is running on port ${PORT}`);
 });
