@@ -1,4 +1,5 @@
 import { Request } from 'express';
+import { Types } from 'mongoose';
 
 export interface IUser {
   _id?: string;
@@ -12,8 +13,8 @@ export interface IUser {
 
 export interface IMessage {
   _id?: string;
-  senderId: string;
-  receiverId: string;
+  senderId: Types.ObjectId;
+  receiverId: Types.ObjectId;
   content: string;
   imageUrl?: string;
   createdAt?: string;
