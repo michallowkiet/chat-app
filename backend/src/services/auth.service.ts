@@ -10,6 +10,13 @@ const hashPassword = async (password: string) => {
   return hashedPassword;
 };
 
+const comparePassword = async (
+  password: string,
+  hashedPassword: string,
+): Promise<boolean> => {
+  return bcrypt.compare(password, hashedPassword);
+};
+
 const generateJWTToken = async (userId: string, res: Response) => {
   const secretKey = process.env.JWT_SECRET ?? 'your_secret_key';
   const token = jwt.sign({ userId }, secretKey, { expiresIn: '1d' });
@@ -24,4 +31,4 @@ const generateJWTToken = async (userId: string, res: Response) => {
   return token;
 };
 
-export { generateJWTToken, hashPassword };
+export { comparePassword, generateJWTToken, hashPassword };

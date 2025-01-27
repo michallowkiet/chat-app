@@ -1,6 +1,10 @@
 import logger from '@/lib/logger.js';
 import User, { createUser } from '@/models/user.model.js';
-import { generateJWTToken, hashPassword } from '@/services/auth.service.js';
+import {
+  comparePassword,
+  generateJWTToken,
+  hashPassword,
+} from '@/services/auth.service.js';
 import { Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 
@@ -81,12 +85,75 @@ const signup = async (req: Request, res: Response): Promise<any> => {
   }
 };
 
-const login = (req: Request, res: Response) => {
-  res.send('login');
+const login = async (req: Request, res: Response): Promise<any> => {
+  const { email, password } = req.body;
+
+  try {
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      logger.error('Invalid email or password', {
+        service: 'auth',
+        method: 'login',
+      });
+
+      return res
+        .status(StatusCodes.BAD_REQUEST)
+        .json({ error: { message: 'Invalid email or password' } });
+    }
+
+    // Check if the password matches the hashed password in the database
+    const isPasswordMatch = await comparePassword(password, user.password);
+
+    if (!isPasswordMatch) {
+      logger.error('Invalid email or password', {
+        service: 'auth',
+        method: 'login',
+      });
+
+      return res
+        .status(StatusCodes.BAD_REQUEST)
+        .json({ error: { message: 'Invalid email or password' } });
+    }
+
+    // Generate a JWT token
+    const token = await generateJWTToken(user._id, res);
+    return res.status(StatusCodes.OK).json({
+      token,
+      user,
+      success: true,
+    });
+  } catch (error) {
+    if (error instanceof Error && error.name === 'MongoError') {
+      logger.error(error.message, {
+        service: 'auth',
+        method: 'login',
+      });
+
+      return res
+        .status(StatusCodes.INTERNAL_SERVER_ERROR)
+        .json({ error: { message: 'An internal server error occurred' } });
+    }
+  }
 };
 
-const logout = (req: Request, res: Response) => {
-  res.send('logout');
+const logout = async (req: Request, res: Response): Promise<any> => {
+  try {
+    return res
+      .status(StatusCodes.OK)
+      .cookie('token', '', { maxAge: 0 })
+      .json('Logged out successfully');
+  } catch (error) {
+    if (error instanceof Error) {
+      logger.error(error.message, {
+        service: 'auth',
+        method: 'logout',
+      });
+      return res
+        .status(StatusCodes.INTERNAL_SERVER_ERROR)
+        .json({ error: { message: 'An internal server error occurred' } });
+    }
+  }
 };
 
 export { login, logout, signup };
