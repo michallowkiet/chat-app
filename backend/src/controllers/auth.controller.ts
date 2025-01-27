@@ -5,6 +5,7 @@ import {
   generateJWTToken,
   hashPassword,
 } from '@/services/auth.service.js';
+import { ChatAppRequest } from '@/types/types.js';
 import { Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 
@@ -156,4 +157,20 @@ const logout = async (req: Request, res: Response): Promise<any> => {
   }
 };
 
-export { login, logout, signup };
+const checkAuth = async (req: ChatAppRequest, res: Response): Promise<any> => {
+  try {
+    return res.status(StatusCodes.OK).json({ user: req.user });
+  } catch (error) {
+    if (error instanceof Error) {
+      logger.error(error.message, {
+        service: 'auth',
+        method: 'checkAuth',
+      });
+      return res
+        .status(StatusCodes.INTERNAL_SERVER_ERROR)
+        .json({ error: { message: 'An internal server error occurred' } });
+    }
+  }
+};
+
+export { checkAuth, login, logout, signup };
