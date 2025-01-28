@@ -16,7 +16,7 @@ const app: Application = express();
 
 // Middleware to enable CORS and parse JSON bodies
 app.use(morgan('common'));
-app.use(cors({ origin: '*' }));
+app.use(cors({ origin: 'http://localhost:5173', credentials: true }));
 app.use(express.json());
 app.use(cookieParser());
 

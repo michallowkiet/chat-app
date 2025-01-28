@@ -7,3 +7,9 @@ export type User = {
   createdAt?: string;
   updatedAt?: string;
 };
+
+export type SignUpForm = {
+  email: string;
+  password: string;
+  fullName: string;
+};
