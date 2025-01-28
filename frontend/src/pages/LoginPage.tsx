@@ -5,7 +5,7 @@ import AuthImagePattern from '../components/AuthImagePattern';
 import useAuthStore from '../store/useAuthStore';
 
 const LoginPage = () => {
-  const { isLoggingIn, login, user } = useAuthStore();
+  const { isLoggingIn, login } = useAuthStore();
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({ password: '', email: '' });
 
