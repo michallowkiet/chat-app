@@ -13,3 +13,12 @@ export type SignUpForm = {
   password: string;
   fullName: string;
 };
+
+export interface SignUpFormResponse {
+  success: boolean;
+  error?: string;
+  data?: {
+    user: User;
+    token: string;
+  };
+}

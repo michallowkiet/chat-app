@@ -1,42 +1,66 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import toast from 'react-hot-toast';
 import { create } from 'zustand';
-import { checkAuth } from '../services/apiServices';
+import { checkAuth, logout, signIn, signUp } from '../services/apiServices';
 import { SignUpForm, User } from '../types/types';
 
 type AuthState = {
-  isAuthenticated: boolean;
-  isLoading: boolean;
-  user?: User; // Adjust the type as needed
-  login: (email: string, password: string) => void;
+  isCheckingAuth: boolean;
+  isSigningUp: boolean;
+  isLoggingIn: boolean;
+  user: User | null; // Adjust the type as needed
+  login: (email: string, password: string) => Promise<void>;
   logout: () => void;
   signup: (data: SignUpForm) => Promise<void>;
   checkAuth: () => Promise<void>;
 };
 
 const useAuthStore = create<AuthState>((set) => ({
-  isAuthenticated: false,
-  isLoading: false,
-  user: undefined,
+  isCheckingAuth: false,
+  isSigningUp: false,
+  isLoggingIn: false,
+  user: null,
   signup: async (data: SignUpForm) => {
-    set({ isLoading: true });
-    console.log(`Signup user with data ${JSON.stringify(data)}`);
-    set({ isLoading: false });
-  },
+    set({ isSigningUp: true });
+    const response = await signUp(data);
 
-  login: (email: string, password: string) => {
-    console.log(`Login user ${email} with password ${password}`);
-  },
-  logout: () => set({ isAuthenticated: false }),
-  checkAuth: async () => {
-    set({ isLoading: true });
-
-    const user = await checkAuth();
-
-    if (user) {
-      set({ isAuthenticated: true, user });
-    } else {
-      set({ isAuthenticated: false, user: undefined });
+    if (response?.success) {
+      set({ user: response?.data?.user });
+      toast.success('Login successful');
     }
-    set({ isLoading: false });
+
+    set({ isSigningUp: false });
+  },
+
+  login: async (email: string, password: string) => {
+    set({ isLoggingIn: true });
+    const response = await signIn(email, password);
+
+    if (response?.success) {
+      set({ user: response?.user });
+      toast.success('Login successful');
+    }
+    set({ isLoggingIn: false });
+  },
+
+  logout: async () => {
+    const response = await logout();
+    if (response) {
+      toast.success('Logout successful');
+      set({ user: null });
+    }
+  },
+
+  checkAuth: async () => {
+    set({ isCheckingAuth: true });
+    try {
+      const user = await checkAuth();
+
+      set({ user: user });
+    } catch (error) {
+      set({ user: null });
+    }
+    set({ isCheckingAuth: false });
   },
 }));
 

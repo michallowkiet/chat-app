@@ -11,15 +11,13 @@ import SignUpPage from './pages/SignUpPage';
 import useAuthStore from './store/useAuthStore';
 
 const App = () => {
-  const { isAuthenticated, isLoading, checkAuth } = useAuthStore((state) => {
-    return state;
-  });
+  const { user, isCheckingAuth, checkAuth } = useAuthStore();
 
   useEffect(() => {
     checkAuth();
   }, [checkAuth]);
 
-  if (isLoading) {
+  if (isCheckingAuth && !user) {
     return (
       <div className="grid grid-cols-1 place-items-center h-screen w-screen">
         <span className="loading loading-spinner loading-[4rem]"></span>
@@ -34,28 +32,23 @@ const App = () => {
       <Routes>
         <Route
           path="/"
-          element={
-            isAuthenticated ? <HomePage /> : <Navigate to="/login" replace />
-          }
+          element={user ? <HomePage /> : <Navigate to="/login" replace />}
         />
         <Route
           path="/signup"
-          element={
-            !isAuthenticated ? <SignUpPage /> : <Navigate to="/" replace />
-          }
+          element={!user ? <SignUpPage /> : <Navigate to="/" replace />}
         />
-        <Route path="/login" element={<LoginPage />} />
+        <Route
+          path="/login"
+          element={!user ? <LoginPage /> : <Navigate to="/" replace />}
+        />
         <Route
           path="/settings"
-          element={
-            isAuthenticated ? <SettingPage /> : <Navigate to="/login" replace />
-          }
+          element={user ? <SettingPage /> : <Navigate to="/login" replace />}
         />
         <Route
           path="/profile"
-          element={
-            isAuthenticated ? <ProfilePage /> : <Navigate to="/login" replace />
-          }
+          element={user ? <ProfilePage /> : <Navigate to="/login" replace />}
         />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>

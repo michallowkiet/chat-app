@@ -8,11 +8,14 @@ import {
   User,
 } from 'lucide-react';
 import { useState } from 'react';
+import toast from 'react-hot-toast';
+import { Link } from 'react-router-dom';
+import AuthImagePattern from '../components/AuthImagePattern';
 import useAuthStore from '../store/useAuthStore';
 import { SignUpForm } from '../types/types';
 
 const SignUpPage = () => {
-  const { isLoading, signup } = useAuthStore((state) => state);
+  const { isSigningUp, signup } = useAuthStore((state) => state);
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState<SignUpForm>({
     email: '',
@@ -20,11 +23,42 @@ const SignUpPage = () => {
     fullName: '',
   });
 
+  const validateForm = () => {
+    if (!formData.fullName.trim()) {
+      toast.error('Please enter your full name');
+      return false;
+    }
+
+    if (!/\S+@\S+\.\S+/.test(formData.email)) {
+      toast.error('Please enter a valid email address');
+      return false;
+    }
+
+    if (!formData.password.trim()) {
+      toast.error('Please enter a password');
+      return false;
+    }
+
+    if (formData.password.length < 8) {
+      toast.error('Password must be at least 8 characters long');
+      return false;
+    }
+
+    return true;
+  };
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // Add your sign up logic here
-    console.log(formData);
-    signup(formData);
+
+    if (validateForm()) {
+      signup(formData);
+    }
+
+    setFormData({
+      email: '',
+      password: '',
+      fullName: '',
+    });
   };
 
   return (
@@ -124,8 +158,12 @@ const SignUpPage = () => {
             </div>
 
             {/* Submit button */}
-            <button type="submit" className="btn btn-primary w-full">
-              {isLoading ? (
+            <button
+              type="submit"
+              className="btn btn-primary w-full"
+              disabled={isSigningUp}
+            >
+              {isSigningUp ? (
                 <>
                   <Loader2 className="size-5 animate-spin" /> Loading...
                 </>
@@ -134,8 +172,24 @@ const SignUpPage = () => {
               )}
             </button>
           </form>
+
+          {/* Link to Login Page */}
+          <div className="text-center">
+            <p className="text-base-content/60">
+              Already have an account?{' '}
+              <Link className="link link-primary" to="/login">
+                Login
+              </Link>
+            </p>
+          </div>
         </div>
       </div>
+
+      {/* Right side content */}
+      <AuthImagePattern
+        title="Join our community"
+        content="Sign up for free to start exploring the platform."
+      />
     </div>
   );
 };

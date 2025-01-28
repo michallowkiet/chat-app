@@ -71,9 +71,10 @@ const signup = async (req: Request, res: Response): Promise<any> => {
         trace: error.stack,
       });
 
-      return res
-        .status(StatusCodes.INTERNAL_SERVER_ERROR)
-        .json({ error: { message: 'An internal server error occurred' } });
+      return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+        success: false,
+        error: { message: 'An internal server error occurred' },
+      });
     }
 
     logger.error('An unknown error occurred', {
@@ -82,7 +83,10 @@ const signup = async (req: Request, res: Response): Promise<any> => {
     });
     return res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
-      .json({ error: { message: 'An unknown error occurred' } });
+      .json({
+        success: false,
+        error: { message: 'An unknown error occurred' },
+      });
   }
 };
 
