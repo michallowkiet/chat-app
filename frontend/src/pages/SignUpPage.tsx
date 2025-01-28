@@ -1,8 +1,18 @@
-import { Eye, EyeOff, Lock, Mail, MessageSquare, User } from 'lucide-react';
+import {
+  Eye,
+  EyeOff,
+  Loader2,
+  Lock,
+  Mail,
+  MessageSquare,
+  User,
+} from 'lucide-react';
 import { useState } from 'react';
+import useAuthStore from '../store/useAuthStore';
 import { SignUpForm } from '../types/types';
 
 const SignUpPage = () => {
+  const { isLoading, signup } = useAuthStore((state) => state);
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState<SignUpForm>({
     email: '',
@@ -14,6 +24,7 @@ const SignUpPage = () => {
     e.preventDefault();
     // Add your sign up logic here
     console.log(formData);
+    signup(formData);
   };
 
   return (
@@ -111,6 +122,17 @@ const SignUpPage = () => {
                 </button>
               </div>
             </div>
+
+            {/* Submit button */}
+            <button type="submit" className="btn btn-primary w-full">
+              {isLoading ? (
+                <>
+                  <Loader2 className="size-5 animate-spin" /> Loading...
+                </>
+              ) : (
+                'Create Account'
+              )}
+            </button>
           </form>
         </div>
       </div>

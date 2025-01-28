@@ -17,7 +17,9 @@ const useAuthStore = create<AuthState>((set) => ({
   isLoading: false,
   user: undefined,
   signup: async (data: SignUpForm) => {
+    set({ isLoading: true });
     console.log(`Signup user with data ${JSON.stringify(data)}`);
+    set({ isLoading: false });
   },
 
   login: (email: string, password: string) => {
