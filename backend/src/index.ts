@@ -24,7 +24,7 @@ app.use(cookieParser());
 // Define your routes here
 app.use('/api/auth', authRoutes);
 app.use('/api/profile', protectedRoute, profileRoutes);
-app.use('/api/message', messageRoutes);
+app.use('/api/message', protectedRoute, messageRoutes);
 
 // Start the server
 app.listen(PORT, async () => {

@@ -11,7 +11,7 @@ const getUsers = async (req: ChatAppRequest, res: Response) => {
     const users = await User.find({ _id: { $ne: req.user?._id } }).select(
       '-password -__v',
     );
-    res.status(StatusCodes.OK).json({ users: users });
+    res.status(StatusCodes.OK).json({ success: true, users: users });
   } catch (error) {
     if (error instanceof Error) {
       logger.error(error.message, {
@@ -38,7 +38,7 @@ const getMessagesByUserId = async (req: ChatAppRequest, res: Response) => {
       ],
     }).select('-__v');
 
-    res.status(StatusCodes.OK).json({ messages });
+    res.status(StatusCodes.OK).json({ success: true, messages });
   } catch (error) {
     if (error instanceof Error) {
       logger.error(error.message, {

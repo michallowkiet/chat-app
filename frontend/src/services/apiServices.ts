@@ -86,5 +86,39 @@ const updateUser = async (data: Partial<User>) => {
   }
 };
 
-export { checkAuth, logout, signIn, signUp, updateUser };
+const getUsers = async () => {
+  try {
+    const response = await axiosInstance.get('/message/users');
+    return response.data;
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      toast.error(`Failed to get users: ${error.message}`);
+    } else {
+      toast.error(`An unexpected error occurred.`);
+    }
+  }
+};
+
+const getMessagesByUserId = async (receiverId: string) => {
+  try {
+    const response = await axiosInstance.get(`/message/${receiverId}`);
+    return response.data;
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      toast.error(`Failed to get messages by user ID: ${error.message}`);
+    } else {
+      toast.error(`An unexpected error occurred.`);
+    }
+  }
+};
+
+export {
+  checkAuth,
+  getMessagesByUserId,
+  getUsers,
+  logout,
+  signIn,
+  signUp,
+  updateUser,
+};
 export default axiosInstance;
