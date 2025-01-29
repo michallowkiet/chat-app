@@ -33,8 +33,8 @@ const getMessagesByUserId = async (req: ChatAppRequest, res: Response) => {
 
     const messages = await Message.find({
       $or: [
-        { senderId, receiverId },
-        { receiverId, senderId },
+        { senderId: senderId, receiverId: receiverId },
+        { senderId: receiverId, receiverId: senderId },
       ],
     }).select('-__v');
 

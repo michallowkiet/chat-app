@@ -18,9 +18,9 @@ interface ChatStore {
   getMessages: (selectedUser: User | null) => Promise<void>;
   selectUser: (user: User | null) => void;
   sendMessage: (
-    userId: string,
+    receiverUser: User | null,
     message: string,
-    image?: string,
+    image?: string | null,
   ) => Promise<void>;
 }
 
@@ -60,9 +60,15 @@ export const useChatStore = create<ChatStore>((set) => ({
   selectUser: (user: User | null) => {
     set({ selectedUser: user });
   },
-  sendMessage: async (userId: string, message: string, image?: string) => {
+  sendMessage: async (
+    user: User | null,
+    message: string,
+    image?: string | null,
+  ) => {
     try {
-      const response = await sendMessage(userId, message, image);
+      const receiverId = user?._id;
+      if (!receiverId) return;
+      const response = await sendMessage(receiverId, message, image);
       if (response.success) toast.success(`Message sent successfully`);
     } catch (error) {
       if (error instanceof AxiosError)

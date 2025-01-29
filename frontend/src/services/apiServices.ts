@@ -116,10 +116,10 @@ const getMessagesByUserId = async (receiverId: string | undefined) => {
 const sendMessage = async (
   receiverId: string,
   content: string,
-  image?: string,
+  image?: string | null,
 ) => {
   try {
-    if (!receiverId || !content || !image)
+    if (!receiverId || !content)
       return toast.error('Please fill in all fields');
     const response = await axiosInstance.post(`/message/send/${receiverId}`, {
       content,
