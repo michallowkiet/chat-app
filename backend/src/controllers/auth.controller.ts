@@ -81,12 +81,10 @@ const signup = async (req: Request, res: Response): Promise<any> => {
       service: 'auth',
       method: 'signup',
     });
-    return res
-      .status(StatusCodes.INTERNAL_SERVER_ERROR)
-      .json({
-        success: false,
-        error: { message: 'An unknown error occurred' },
-      });
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+      success: false,
+      error: { message: 'An unknown error occurred' },
+    });
   }
 };
 
@@ -147,7 +145,7 @@ const logout = async (req: Request, res: Response): Promise<any> => {
     return res
       .status(StatusCodes.OK)
       .cookie('token', '', { maxAge: 0 })
-      .json('Logged out successfully');
+      .json({ success: true, message: 'Logged out successfully' });
   } catch (error) {
     if (error instanceof Error) {
       logger.error(error.message, {

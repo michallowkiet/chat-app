@@ -8,6 +8,7 @@ import 'dotenv/config';
 import express, { Application } from 'express';
 import morgan from 'morgan';
 import { connectToCloudinary } from './lib/cloudinary.js';
+import { protectedRoute } from './middleware/auth.middleware.js';
 import messageRoutes from './routes/message.route.js';
 
 const PORT = process.env.PORT ?? 3000;
@@ -22,7 +23,7 @@ app.use(cookieParser());
 
 // Define your routes here
 app.use('/api/auth', authRoutes);
-app.use('/api/profile', profileRoutes, profileRoutes);
+app.use('/api/profile', protectedRoute, profileRoutes);
 app.use('/api/message', messageRoutes);
 
 // Start the server

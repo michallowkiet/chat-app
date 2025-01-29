@@ -45,16 +45,17 @@ const signUp = async (data: SignUpForm) => {
   }
 };
 
-const logout = async () => {
+const logout = async (): Promise<string | null> => {
   try {
-    await axiosInstance.post('/auth/logout');
-    return true;
+    const response = await axiosInstance.post('/auth/logout');
+    return await response.data.success;
   } catch (error) {
     if (error instanceof AxiosError) {
       toast.error(`Logout failed: ${error.message}`);
     } else {
       toast.error(`An unexpected error occurred.`);
     }
+    return null;
   }
 };
 
@@ -69,5 +70,21 @@ const checkAuth = async (): Promise<User | null> => {
   }
 };
 
-export { checkAuth, logout, signIn, signUp };
+const updateUser = async (data: Partial<User>) => {
+  try {
+    const image = data.profilePicture ?? '';
+    const response = await axiosInstance.put('/profile/update', {
+      profilePicture: image,
+    });
+    return response.data;
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      toast.error(`Update profile failed: ${error.message}`);
+    } else {
+      toast.error(`An unexpected error occurred.`);
+    }
+  }
+};
+
+export { checkAuth, logout, signIn, signUp, updateUser };
 export default axiosInstance;

@@ -16,14 +16,14 @@ const updateProfile = async (
     if (!req.user) {
       return res
         .status(StatusCodes.NOT_FOUND)
-        .json({ message: 'User not found' });
+        .json({ success: false, message: 'User not found' });
     }
 
     // Check if the profile picture is provided
     if (!profilePicture) {
       return res
         .status(StatusCodes.BAD_REQUEST)
-        .json({ message: 'Profile picture is required' });
+        .json({ success: false, message: 'Profile picture is required' });
     }
 
     // Update the user's profile data
@@ -38,9 +38,11 @@ const updateProfile = async (
       { new: true },
     ).select('-password');
 
-    res
-      .status(StatusCodes.CREATED)
-      .json({ message: 'Profile updated successfully', user: updatedUser });
+    res.status(StatusCodes.CREATED).json({
+      success: true,
+      message: 'Profile updated successfully',
+      user: updatedUser,
+    });
   } catch (error) {
     logger.error('Error updating profile:', {
       controller: 'profile.controller.ts',

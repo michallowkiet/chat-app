@@ -1,24 +1,33 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import toast from 'react-hot-toast';
 import { create } from 'zustand';
-import { checkAuth, logout, signIn, signUp } from '../services/apiServices';
+import {
+  checkAuth,
+  logout,
+  signIn,
+  signUp,
+  updateUser,
+} from '../services/apiServices';
 import { SignUpForm, User } from '../types/types';
 
 type AuthState = {
   isCheckingAuth: boolean;
   isSigningUp: boolean;
   isLoggingIn: boolean;
-  user: User | null; // Adjust the type as needed
+  isUpdatingProfile: boolean;
+  user: User | null;
   login: (email: string, password: string) => Promise<void>;
   logout: () => void;
   signup: (data: SignUpForm) => Promise<void>;
   checkAuth: () => Promise<void>;
+  updateProfile: (data: Partial<User>) => Promise<void>;
 };
 
 const useAuthStore = create<AuthState>((set) => ({
   isCheckingAuth: false,
   isSigningUp: false,
   isLoggingIn: false,
+  isUpdatingProfile: false,
   user: null,
   signup: async (data: SignUpForm) => {
     set({ isSigningUp: true });
@@ -46,8 +55,8 @@ const useAuthStore = create<AuthState>((set) => ({
   logout: async () => {
     const response = await logout();
     if (response) {
-      toast.success('Logout successful');
       set({ user: null });
+      toast.success('Logout successful');
     }
   },
 
@@ -61,6 +70,16 @@ const useAuthStore = create<AuthState>((set) => ({
       set({ user: null });
     }
     set({ isCheckingAuth: false });
+  },
+
+  updateProfile: async (data: Partial<User>) => {
+    set({ isUpdatingProfile: true });
+    const response = await updateUser(data);
+    if (response?.success) {
+      toast.success('Profile updated successfully');
+      set({ user: response?.user });
+    }
+    set({ isUpdatingProfile: false });
   },
 }));
 
