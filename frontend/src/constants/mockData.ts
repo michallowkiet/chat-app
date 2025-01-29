@@ -6,3 +6,6 @@ export const PREVIEW_MESSAGES = [
     isSent: true,
   },
 ];
+
+export const SKELETON_CONTACTS = Array(8).fill(null);
+export const SKELETON_MESSAGES = Array(6).fill(null);

@@ -1,18 +1,27 @@
 import { AxiosError } from 'axios';
 import toast from 'react-hot-toast';
 import { create } from 'zustand';
-import { getMessagesByUserId, getUsers } from '../services/apiServices';
-import { User } from '../types/types';
+import {
+  getMessagesByUserId,
+  getUsers,
+  sendMessage,
+} from '../services/apiServices';
+import { ChatMessage, User } from '../types/types';
 
 interface ChatStore {
-  messages: string[];
+  messages: ChatMessage[];
   users: User[];
   selectedUser: User | null;
   isUsersLoading: boolean;
   isMessagesLoading: boolean;
   getUsers: () => Promise<void>;
-  getMessages: (selectedUserId: string) => Promise<void>;
+  getMessages: (selectedUser: User | null) => Promise<void>;
   selectUser: (user: User | null) => void;
+  sendMessage: (
+    userId: string,
+    message: string,
+    image?: string,
+  ) => Promise<void>;
 }
 
 export const useChatStore = create<ChatStore>((set) => ({
@@ -34,11 +43,12 @@ export const useChatStore = create<ChatStore>((set) => ({
       set({ isUsersLoading: false });
     }
   },
-  getMessages: async (selectedUserId: string) => {
+  getMessages: async (selectedUser: User | null) => {
     set({ isMessagesLoading: true });
+    if (!selectedUser) return;
 
     try {
-      const response = await getMessagesByUserId(selectedUserId);
+      const response = await getMessagesByUserId(selectedUser?._id);
       if (response.success)
         set({ messages: response.messages, isMessagesLoading: false });
     } catch (error) {
@@ -49,5 +59,14 @@ export const useChatStore = create<ChatStore>((set) => ({
   },
   selectUser: (user: User | null) => {
     set({ selectedUser: user });
+  },
+  sendMessage: async (userId: string, message: string, image?: string) => {
+    try {
+      const response = await sendMessage(userId, message, image);
+      if (response.success) toast.success(`Message sent successfully`);
+    } catch (error) {
+      if (error instanceof AxiosError)
+        toast.error(`Error sending message: ${error?.message}`);
+    }
   },
 }));

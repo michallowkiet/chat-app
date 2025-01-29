@@ -16,6 +16,7 @@ type AuthState = {
   isLoggingIn: boolean;
   isUpdatingProfile: boolean;
   user: User | null;
+  onlineUsers: User[];
   login: (email: string, password: string) => Promise<void>;
   logout: () => void;
   signup: (data: SignUpForm) => Promise<void>;
@@ -29,6 +30,7 @@ const useAuthStore = create<AuthState>((set) => ({
   isLoggingIn: false,
   isUpdatingProfile: false,
   user: null,
+  onlineUsers: [],
   signup: async (data: SignUpForm) => {
     set({ isSigningUp: true });
     const response = await signUp(data);

@@ -99,8 +99,9 @@ const getUsers = async () => {
   }
 };
 
-const getMessagesByUserId = async (receiverId: string) => {
+const getMessagesByUserId = async (receiverId: string | undefined) => {
   try {
+    if (!receiverId) return toast.error('Please select a user');
     const response = await axiosInstance.get(`/message/${receiverId}`);
     return response.data;
   } catch (error) {
@@ -112,11 +113,34 @@ const getMessagesByUserId = async (receiverId: string) => {
   }
 };
 
+const sendMessage = async (
+  receiverId: string,
+  content: string,
+  image?: string,
+) => {
+  try {
+    if (!receiverId || !content || !image)
+      return toast.error('Please fill in all fields');
+    const response = await axiosInstance.post(`/message/send/${receiverId}`, {
+      content,
+      image,
+    });
+    return response.data;
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      toast.error(`Failed to send message: ${error.message}`);
+    } else {
+      toast.error(`An unexpected error occurred.`);
+    }
+  }
+};
+
 export {
   checkAuth,
   getMessagesByUserId,
   getUsers,
   logout,
+  sendMessage,
   signIn,
   signUp,
   updateUser,
