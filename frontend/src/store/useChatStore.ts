@@ -7,6 +7,7 @@ import {
   sendMessage,
 } from '../services/apiServices';
 import { ChatMessage, User } from '../types/types';
+import useAuthStore from './useAuthStore';
 
 interface ChatStore {
   messages: ChatMessage[];
@@ -22,9 +23,11 @@ interface ChatStore {
     message: string,
     image?: string | null,
   ) => Promise<void>;
+  subscribeToNewMessages: () => void;
+  unsubscribeFromMessages: () => void;
 }
 
-export const useChatStore = create<ChatStore>((set) => ({
+export const useChatStore = create<ChatStore>((set, get) => ({
   messages: [],
   users: [],
   selectedUser: null,
@@ -69,10 +72,33 @@ export const useChatStore = create<ChatStore>((set) => ({
       const receiverId = user?._id;
       if (!receiverId) return;
       const response = await sendMessage(receiverId, message, image);
-      if (response.success) toast.success(`Message sent successfully`);
+      if (response.success) {
+        toast.success(`Message sent successfully`);
+        set({ messages: [...get().messages, response.message] });
+      }
     } catch (error) {
       if (error instanceof AxiosError)
         toast.error(`Error sending message: ${error?.message}`);
     }
+  },
+  subscribeToNewMessages: () => {
+    const receiverId = get().selectedUser?._id;
+    if (!receiverId) return;
+    const socket = useAuthStore.getState().socket;
+
+    if (!socket) return;
+
+    socket.on('newMessage', (newMessage: ChatMessage) => {
+      if (newMessage.senderId !== receiverId) return;
+
+      set((state) => ({
+        messages: [...state.messages, newMessage],
+      }));
+    });
+  },
+  unsubscribeFromMessages: () => {
+    const socket = useAuthStore.getState().socket;
+    if (!socket) return;
+    socket.off('newMessage');
   },
 }));

@@ -1,14 +1,30 @@
-import useAuthStore from '../../store/useAuthStore';
-import { useChatStore } from '../../store/useChatStore';
+import { useEffect, useRef } from 'react';
+import { ChatMessage, User } from '../../types/types';
 
-const ChatMessages = () => {
-  const { messages, selectedUser } = useChatStore();
-  const { user: authorizedUser } = useAuthStore();
+interface ChatMessagesProps {
+  messages: ChatMessage[];
+  selectedUser: User | null;
+  authorizedUser: User | null;
+}
+
+const ChatMessages = ({
+  messages,
+  selectedUser,
+  authorizedUser,
+}: ChatMessagesProps) => {
+  const messageRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (messageRef.current) {
+      messageRef.current.scrollIntoView({ behavior: 'smooth', block: 'end' });
+    }
+  }, [messages]);
 
   return (
     <div className="flex-1 overflow-y-auto p-4 space-y-4">
       {messages.map((message) => (
         <div
+          ref={messageRef}
           key={message._id}
           className={`chat ${
             message.senderId === authorizedUser?._id ? 'chat-end' : 'chat-start'

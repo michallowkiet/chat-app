@@ -1,12 +1,12 @@
-import { Eye, EyeOff, Loader2, Lock, Mail, MessageSquare } from 'lucide-react';
+import { Loader2, Lock, Mail, MessageSquare } from 'lucide-react';
 import { FormEvent, useState } from 'react';
 import { Link } from 'react-router-dom';
 import AuthImagePattern from '../components/AuthImagePattern';
 import useAuthStore from '../store/useAuthStore';
+import Input from '../ui/Input';
 
 const LoginPage = () => {
   const { isLoggingIn, login } = useAuthStore();
-  const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({ password: '', email: '' });
 
   const handleLogin = (e: FormEvent<HTMLFormElement>) => {
@@ -37,58 +37,28 @@ const LoginPage = () => {
           {/* Form */}
           <form className="space-y-6" onSubmit={handleLogin}>
             {/* Form Group Email */}
-            <div className="join join-vertical w-full">
-              <label htmlFor="email" className="label mb-1">
-                <span className="label font-medium text-base">Email</span>
-              </label>
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Mail className="size-5 text-base-content/40" />
-                </div>
-                <input
-                  name="email"
-                  type="text"
-                  className="input w-full pl-10"
-                  placeholder="Email"
-                  onChange={(e) => {
-                    setFormData({ ...formData, email: e.target.value });
-                  }}
-                  value={formData.email}
-                />
-              </div>
-            </div>
+            <Input
+              placeholder="Email"
+              type="email"
+              icon={<Mail className="size-5 text-base-content/40" />}
+              label="Email"
+              value={formData.email}
+              onChange={(e) =>
+                setFormData({ ...formData, email: e.target.value })
+              }
+            />
 
             {/* Form Group Password */}
-            <div className="join join-vertical w-full">
-              <label htmlFor="password" className="label mb-1">
-                <span className="label font-medium text-base">Password</span>
-              </label>
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Lock className="size-5 text-base-content/40" />
-                </div>
-                <input
-                  name="password"
-                  type={showPassword ? 'text' : 'password'}
-                  className="input w-full pl-10"
-                  placeholder="Password"
-                  onChange={(e) => {
-                    setFormData({ ...formData, password: e.target.value });
-                  }}
-                  value={formData.password}
-                />
-                <button
-                  className="absolute inset-y-0 right-0 pr-3 flex items-center"
-                  onClick={() => setShowPassword(!showPassword)}
-                >
-                  {showPassword ? (
-                    <EyeOff className="size-5 text-base-content/40" />
-                  ) : (
-                    <Eye className="size-5 text-base-content/40" />
-                  )}
-                </button>
-              </div>
-            </div>
+            <Input
+              placeholder="Password"
+              type="password"
+              icon={<Lock className="size-5 text-base-content/40" />}
+              label="Password"
+              value={formData.password}
+              onChange={(e) =>
+                setFormData({ ...formData, password: e.target.value })
+              }
+            />
 
             {/* Submit button */}
             <button

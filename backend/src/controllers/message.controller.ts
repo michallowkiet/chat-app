@@ -1,5 +1,6 @@
 import cloudinary from '@/lib/cloudinary.js';
 import logger from '@/lib/logger.js';
+import { getReceiverSocketId, io } from '@/lib/socketio.js';
 import Message from '@/models/message.model.js';
 import User from '@/models/user.model.js';
 import { ChatAppRequest } from '@/types/types.js';
@@ -73,9 +74,12 @@ const sendMessage = async (req: ChatAppRequest, res: Response) => {
       imageUrl,
     });
 
-    // TODO: realtime notification to receiver => socket.io
+    const receiverSockedId = getReceiverSocketId(receiverId);
+    if (receiverSockedId) {
+      io.to(receiverSockedId).emit('newMessage', message);
+    }
 
-    res.status(StatusCodes.CREATED).json({ message });
+    res.status(StatusCodes.CREATED).json({ success: true, message });
   } catch (error) {
     if (error instanceof Error) {
       logger.error(error.message, {

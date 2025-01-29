@@ -1,19 +1,18 @@
+import { connectToCloudinary } from '@/lib/cloudinary.js';
 import logger from '@/lib/logger.js';
 import { connectToMongoDB } from '@/lib/mongoDB.js';
+import { app, server } from '@/lib/socketio.js';
+import { protectedRoute } from '@/middleware/auth.middleware.js';
+import messageRoutes from '@/routes/message.route.js';
 import profileRoutes from '@/routes/profile.route.js';
 import authRoutes from '@routes/auth.route.js';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import 'dotenv/config';
-import express, { Application } from 'express';
+import express from 'express';
 import morgan from 'morgan';
-import { connectToCloudinary } from './lib/cloudinary.js';
-import { protectedRoute } from './middleware/auth.middleware.js';
-import messageRoutes from './routes/message.route.js';
 
 const PORT = process.env.PORT ?? 3000;
-
-const app: Application = express();
 
 // Middleware to enable CORS and parse JSON bodies
 app.use(morgan('common'));
@@ -27,8 +26,18 @@ app.use('/api/profile', protectedRoute, profileRoutes);
 app.use('/api/message', protectedRoute, messageRoutes);
 
 // Start the server
-app.listen(PORT, async () => {
+server.listen(PORT, async () => {
   await connectToMongoDB();
   await connectToCloudinary();
+
+  // Add dummy data for testing purposes
+  // try {
+  //   logger.info('Seeding dummy users...');
+  //   await User.insertMany(seedUsers);
+  //   logger.info('Dummy users seeded successfully');
+  // } catch (error) {
+  //   logger.error('Error seeding users:', error);
+  // }
+
   logger.info(`Server is running on port ${PORT}`);
 });
