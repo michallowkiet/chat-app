@@ -9,9 +9,11 @@ import ProfilePage from './pages/ProfilePage';
 import SettingPage from './pages/SettingPage';
 import SignUpPage from './pages/SignUpPage';
 import useAuthStore from './store/useAuthStore';
+import { useThemeStore } from './store/useThemeStore';
 
 const App = () => {
   const { user, isCheckingAuth, checkAuth } = useAuthStore();
+  const { theme } = useThemeStore();
 
   useEffect(() => {
     checkAuth();
@@ -26,7 +28,10 @@ const App = () => {
   }
 
   return (
-    <div className="grid grid-cols-1 content-start h-screen w-screen bg-gray-200 dark:bg-gray-800">
+    <div
+      className="grid grid-cols-1 content-start h-screen w-screen"
+      data-theme={theme}
+    >
       <Toaster position="top-center" toastOptions={{ duration: 3000 }} />
       <Navbar />
       <Routes>

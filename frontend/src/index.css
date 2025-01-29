@@ -1,5 +1,7 @@
 @import 'tailwindcss';
-@plugin "daisyui";
+@plugin "daisyui" {
+  themes: all;
+}
 
 @theme {
   --animate-pulse-2: pulse-2 2s ease-in infinite;
