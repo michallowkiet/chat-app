@@ -1,14 +1,25 @@
 import { Users } from 'lucide-react';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import useAuthStore from '../store/useAuthStore';
 import { useChatStore } from '../store/useChatStore';
+import { User } from '../types/types';
 import SidebarSkeleton from './SidebarSkeleton';
 
 const Sidebar = () => {
   const { isUsersLoading, users, selectedUser, getUsers, selectUser } =
     useChatStore();
-
   const { onlineUsers, user } = useAuthStore();
+  const [showOnlineUsers, setShowOnlineUsers] = useState(false);
+
+  const toggleShowOnlineUsers = () => {
+    setShowOnlineUsers(!showOnlineUsers);
+  };
+
+  const filteredUsers: User[] = showOnlineUsers
+    ? users.filter((user: User) => {
+        if (user._id) return onlineUsers.includes(user?._id);
+      })
+    : users;
 
   useEffect(() => {
     getUsers();
@@ -38,10 +49,25 @@ const Sidebar = () => {
             </div>
           </div>
         </div>
+
+        {/* Toggle button for showing online users  */}
+        <fieldset className="fieldset mt-2">
+          <label className="fieldset-label text-base-content ">
+            <input
+              type="checkbox"
+              className="peer toggle toggle-sm checked:bg-green-500 transition-colors duration-300"
+              onChange={toggleShowOnlineUsers}
+              defaultChecked={showOnlineUsers}
+            />
+            <span className="text-base-content/50 peer-checked:text-green-500">
+              Show only online users
+            </span>
+          </label>
+        </fieldset>
       </div>
 
       <div className="overflow-y-auto w-full p-3">
-        {users.map((user) => (
+        {filteredUsers.map((user) => (
           <button
             key={user._id}
             onClick={() => selectUser(user)}
