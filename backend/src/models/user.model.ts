@@ -1,6 +1,6 @@
-import logger from '@/lib/logger.js';
-import { IUser } from '@/types/types.js';
 import { Model, model, Schema } from 'mongoose';
+import logger from '../lib/logger';
+import { IUser } from '../types/types';
 
 const UserSchema = new Schema<IUser, Model<IUser>>(
   {

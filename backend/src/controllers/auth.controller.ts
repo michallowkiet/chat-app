@@ -1,13 +1,13 @@
-import logger from '@/lib/logger.js';
-import User, { createUser } from '@/models/user.model.js';
-import {
-  comparePassword,
-  generateJWTToken,
-  hashPassword,
-} from '@/services/auth.service.js';
-import { ChatAppRequest } from '@/types/types.js';
 import { Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
+import logger from '../lib/logger';
+import User, { createUser } from '../models/user.model';
+import {
+  hashPassword,
+  generateJWTToken,
+  comparePassword,
+} from '../services/auth.service';
+import { ChatAppRequest } from '../types/types';
 
 const signup = async (req: Request, res: Response): Promise<any> => {
   const { fullName, email, password } = req.body;

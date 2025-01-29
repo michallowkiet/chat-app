@@ -1,11 +1,11 @@
-import cloudinary from '@/lib/cloudinary.js';
-import logger from '@/lib/logger.js';
-import { getReceiverSocketId, io } from '@/lib/socketio.js';
-import Message from '@/models/message.model.js';
-import User from '@/models/user.model.js';
-import { ChatAppRequest } from '@/types/types.js';
 import { Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
+import cloudinary from '../lib/cloudinary';
+import logger from '../lib/logger';
+import { getReceiverSocketId, io } from '../lib/socketio';
+import Message from '../models/message.model';
+import User from '../models/user.model';
+import { ChatAppRequest } from '../types/types';
 
 const getUsers = async (req: ChatAppRequest, res: Response) => {
   try {

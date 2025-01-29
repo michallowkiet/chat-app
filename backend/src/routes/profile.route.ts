@@ -1,5 +1,5 @@
-import { updateProfile } from '@/controllers/profile.controller.js';
 import { Router } from 'express';
+import { updateProfile } from '../controllers/profile.controller';
 
 const profileRoutes = Router();
 

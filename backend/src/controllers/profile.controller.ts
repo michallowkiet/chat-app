@@ -1,9 +1,9 @@
-import cloudinary from '@/lib/cloudinary.js';
-import logger from '@/lib/logger.js';
-import User from '@/models/user.model.js';
-import { ChatAppRequest } from '@/types/types.js';
 import { Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
+import cloudinary from '../lib/cloudinary';
+import logger from '../lib/logger';
+import User from '../models/user.model';
+import { ChatAppRequest } from '../types/types';
 
 const updateProfile = async (
   req: ChatAppRequest,

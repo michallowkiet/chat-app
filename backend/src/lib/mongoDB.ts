@@ -1,6 +1,6 @@
 import 'dotenv/config';
 import { connect } from 'mongoose';
-import logger from './logger.js';
+import logger from './logger';
 
 const MONGO_PASSWORD = process.env.MONGO_PASSWORD ?? '';
 const MONGO_USERNAME = process.env.MONGO_USERNAME ?? '';

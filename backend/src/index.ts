@@ -1,16 +1,16 @@
-import { connectToCloudinary } from '@/lib/cloudinary.js';
-import logger from '@/lib/logger.js';
-import { connectToMongoDB } from '@/lib/mongoDB.js';
-import { app, server } from '@/lib/socketio.js';
-import { protectedRoute } from '@/middleware/auth.middleware.js';
-import messageRoutes from '@/routes/message.route.js';
-import profileRoutes from '@/routes/profile.route.js';
-import authRoutes from '@routes/auth.route.js';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import 'dotenv/config';
 import express from 'express';
 import morgan from 'morgan';
+import { connectToCloudinary } from './lib/cloudinary';
+import logger from './lib/logger';
+import { connectToMongoDB } from './lib/mongoDB';
+import { app, server } from './lib/socketio';
+import { protectedRoute } from './middleware/auth.middleware';
+import authRoutes from './routes/auth.route';
+import messageRoutes from './routes/message.route';
+import profileRoutes from './routes/profile.route';
 
 const PORT = process.env.PORT ?? 3000;
 

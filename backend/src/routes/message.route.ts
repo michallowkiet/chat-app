@@ -1,10 +1,10 @@
-import {
-  getMessagesByUserId,
-  getUsers,
-  sendMessage,
-} from '@/controllers/message.controller.js';
-import { protectedRoute } from '@/middleware/auth.middleware.js';
 import { Router } from 'express';
+import {
+  getUsers,
+  getMessagesByUserId,
+  sendMessage,
+} from '../controllers/message.controller';
+import { protectedRoute } from '../middleware/auth.middleware';
 
 const messageRoutes = Router();
 

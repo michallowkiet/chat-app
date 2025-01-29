@@ -1,9 +1,9 @@
-import logger from '@/lib/logger.js';
-import User from '@/models/user.model.js';
-import { verifyJWTToken } from '@/services/auth.service.js';
-import { ChatAppRequest } from '@/types/types.js';
 import { NextFunction, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
+import logger from '../lib/logger';
+import User from '../models/user.model';
+import { verifyJWTToken } from '../services/auth.service';
+import { ChatAppRequest } from '../types/types';
 
 // Middleware to check if the user is authenticated
 const protectedRoute = async (
