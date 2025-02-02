@@ -16,7 +16,7 @@ const PORT = process.env.PORT ?? 3000;
 
 // Middleware to enable CORS and parse JSON bodies
 app.use(morgan('common'));
-app.use(cors({ origin: 'http://localhost:5173', credentials: true }));
+app.use(cors({ origin: process.env.CORS_ORIGIN, credentials: true }));
 app.use(express.json());
 app.use(cookieParser());
 
