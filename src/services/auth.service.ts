@@ -29,7 +29,7 @@ const generateJWTToken = async (userId: string, res: Response) => {
     maxAge: 7 * 24 * 60 * 60, // 1 day in seconds
     path: '/', // The cookie will be available for all routes
     httpOnly: true, // Prevents JavaScript from accessing the cookie. XSS attacks are prevented by setting this to true.
-    sameSite: 'none', // Prevents cross-site request forgery (CSRF) attacks. Set to 'none' if you need to allow cookies from different domains.
+    sameSite: 'strict', // Prevents cross-site request forgery (CSRF) attacks. Set to 'none' if you need to allow cookies from different domains.
     secure: process.env.NODE_ENV !== 'development', // Only send cookies over HTTPS
   });
 
