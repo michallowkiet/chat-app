@@ -9,7 +9,7 @@
 		"frontend:dev": "npm run dev --prefix frontend",
 		"frontend:build": "npm run build --prefix frontend",
 		"dev": "concurrently \"npm run backend:dev\" \"npm run frontend:dev\"",
-		"build": "npm run build --prefix backend && npm run frontend:build",
+		"build": "npm run backend:build && npm run frontend:build",
 		"start": "node  /backend/dist/src/index.js"
 	},
 	"repository": {
@@ -19,6 +19,7 @@
 	"keywords": [],
 	"author": "",
 	"license": "ISC",
+	"workspaces":["frontend", "backend"],
 	"bugs": {
 		"url": "https://github.com/michallowkiet/chat-app/issues"
 	},
