@@ -4,7 +4,7 @@
   "main": "dist/src/index.js",
   "scripts": {
     "start": "node dist/src/index.js",
-    "build": "tsc",
+    "build": "npm install && tsc",
     "dev": "npx tsx watch src/index.ts"
   },
   "keywords": [],
