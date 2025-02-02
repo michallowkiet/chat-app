@@ -4,12 +4,12 @@
 	"description": "This application is a real-time chat application that allows users to send and receive messages instantly. It uses React with TypeScript for the frontend and Express.js with TypeScript for the backend, ensuring type safety and better code quality.",
 	"main": "index.js",
 	"scripts": {
-		"backend:dev": "npm run dev --prefix backend",
-		"backend:build": "npm run build --prefix backend",
-		"frontend:dev": "npm run dev --prefix frontend",
-		"frontend:build": "npm run build --prefix frontend",
-		"dev": "concurrently \"npm run backend:dev\" \"npm run frontend:dev\"",
-		"build": "npm run backend:build && npm run frontend:build",
+		"backend-dev": "npm run dev --prefix backend",
+		"backend-build": "npm run build --prefix backend",
+		"frontend-dev": "npm run dev --prefix frontend",
+		"frontend-build": "npm run build --prefix frontend",
+		"dev": "concurrently \"npm run backend-dev\" \"npm run frontend-dev\"",
+		"build": "npm run backend-build && npm run frontend-build",
 		"start": "node  /backend/dist/src/index.js"
 	},
 	"repository": {
@@ -19,7 +19,6 @@
 	"keywords": [],
 	"author": "",
 	"license": "ISC",
-	"workspaces":["frontend", "backend"],
 	"bugs": {
 		"url": "https://github.com/michallowkiet/chat-app/issues"
 	},
