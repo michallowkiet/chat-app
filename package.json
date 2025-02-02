@@ -9,8 +9,8 @@
 		"frontend:dev": "npm run dev --prefix frontend",
 		"frontend:build": "npm run build --prefix frontend",
 		"dev": "concurrently \"npm run backend:dev\" \"npm run frontend:dev\"",
-		"build": "concurrently \"npm run build --prefix backend\" \"npm run frontend:build\"",
-		"start": "npm run backend:build && npm run frontend:build && node  /backend/dist/src/index.js"
+		"build": "npm run build --prefix backend && npm run frontend:build",
+		"start": "node  /backend/dist/src/index.js"
 	},
 	"repository": {
 		"type": "git",
