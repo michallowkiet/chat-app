@@ -1,35 +1,47 @@
 {
-	"name": "chat-app",
-	"version": "1.0.0",
-	"description": "This application is a real-time chat application that allows users to send and receive messages instantly. It uses React with TypeScript for the frontend and Express.js with TypeScript for the backend, ensuring type safety and better code quality.",
-	"main": "index.js",
-	"scripts": {
-		"backend": "npm run dev -w backend",
-		"backend-build": "npm run build -w backend",
-		"backend-start": "npm start -w backend",
-		"frontend-build": "npm run build -w frontend",
-		"frontend-start": "npm start -w frontend",
-		"frontend": "npm run dev -w frontend",
-		"dev": "concurrently \"npm run backend\" \"npm run frontend\"",
-		"start": "concurrently \"npm run backend-start\" \"npm run frontend-start\"",
-		"build": "concurrently \"npm run backend-build\" \"npm run frontend-build\""
-	},
-	"repository": {
-		"type": "git",
-		"url": "git+https://github.com/michallowkiet/chat-app.git"
-	},
-	"keywords": [],
-	"author": "Michał Łowkiet",
-	"workspaces": [
-		"frontend",
-		"backend"
-	],
-	"license": "ISC",
-	"bugs": {
-		"url": "https://github.com/michallowkiet/chat-app/issues"
-	},
-	"homepage": "https://github.com/michallowkiet/chat-app#readme",
-	"devDependencies": {
-		"concurrently": "^9.1.2"
-	}
+  "name": "backend",
+  "version": "1.0.0",
+  "main": "index.ts",
+  "scripts": {
+    "start": "node dist/src/index.js",
+    "build": "tsc",
+    "dev": "npx tsx watch src/index.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "description": "",
+  "devDependencies": {
+    "@cloudinary-util/types": "^1.6.0",
+    "@eslint/js": "^9.19.0",
+    "@tsconfig/node22": "^22.0.0",
+    "@types/cookie-parser": "^1.4.8",
+    "@types/cors": "^2.8.17",
+    "@types/express": "^5.0.0",
+    "@types/jsonwebtoken": "^9.0.8",
+    "@types/morgan": "^1.9.9",
+    "@types/node": "^22.10.10",
+    "@typescript-eslint/eslint-plugin": "^8.21.0",
+    "@typescript-eslint/parser": "^8.21.0",
+    "eslint": "^9.19.0",
+    "prettier": "^3.4.2",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.3"
+  },
+  "dependencies": {
+    "@types/bcrypt": "^5.0.2",
+    "bcrypt": "^5.1.1",
+    "cloudinary": "^2.5.1",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "http-status-codes": "^2.3.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.9.5",
+    "morgan": "^1.10.0",
+    "socket.io": "^4.8.1",
+    "winston": "^3.17.0"
+  }
 }

@@ -1,4 +1,4 @@
-# Chat Application
+# Chat Application - Backend
 
 This application is a real-time chat application that allows users to send and receive messages instantly. It uses React with TypeScript for the frontend and Express.js with TypeScript for the backend, ensuring type safety and better code quality.
 
@@ -10,8 +10,7 @@ For deployment, the application can be hosted on various platforms such as AWS, 
 
 ## Default Configuration
 
-- **Backend Port:** 3000
-- **Frontend Port:** 5173
+- **Backend Port:** 300
 - **All environments:** .env.dist
 
 ## Getting Started
@@ -21,10 +20,12 @@ For deployment, the application can be hosted on various platforms such as AWS, 
 2. **Setup environment variables:**
    - Copy `.env.dist` to `.env` and fill in the necessary environment variables.
 3. **Install backend dependencies and start the server:**
-   - `cd chat-app/backend`
+   - `cd chat-app`
    - `npm install && npm run dev`
-4. **Install frontend dependencies and start the server:**
-   - `cd chat-app/frontend`
+4. **Install frontend app part, dependencies and start the server:**
+   - `git clone https://github.com/michallowkiet/chat-app-frontend.git`
+   - `cd chat-app-frontend`
+   - remember to change the backend URL in frontend `.env` file
    - `npm install && npm run dev`
 5. **Access the application in your browser:**
    - Open a web browser and navigate to `http://localhost:5173`
