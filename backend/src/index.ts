@@ -3,6 +3,7 @@ import cors from 'cors';
 import 'dotenv/config';
 import express from 'express';
 import morgan from 'morgan';
+import path from 'path';
 import { connectToCloudinary } from './lib/cloudinary';
 import logger from './lib/logger';
 import { connectToMongoDB } from './lib/mongoDB';
@@ -24,6 +25,10 @@ app.use(cookieParser());
 app.use('/api/auth', authRoutes);
 app.use('/api/profile', protectedRoute, profileRoutes);
 app.use('/api/message', protectedRoute, messageRoutes);
+
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(path.join(__dirname, '../../frontend/dist')));
+}
 
 // Start the server
 server.listen(PORT, async () => {
