@@ -1,0 +1,29 @@
+{
+	"name": "chat-app",
+	"version": "1.0.0",
+	"description": "This application is a real-time chat application that allows users to send and receive messages instantly. It uses React with TypeScript for the frontend and Express.js with TypeScript for the backend, ensuring type safety and better code quality.",
+	"main": "index.js",
+	"scripts": {
+		"backend": "npm run dev -w backend",
+		"frontend": "npm run dev -w frontend",
+		"start": "concurrently \"npm run backend\" \"npm run frontend\""
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/michallowkiet/chat-app.git"
+	},
+	"keywords": [],
+	"author": "Michał Łowkiet",
+	"workspaces": [
+		"frontend",
+		"backend"
+	],
+	"license": "ISC",
+	"bugs": {
+		"url": "https://github.com/michallowkiet/chat-app/issues"
+	},
+	"homepage": "https://github.com/michallowkiet/chat-app#readme",
+	"devDependencies": {
+		"concurrently": "^9.1.2"
+	}
+}
